@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For hanonaa 💖</title>
+    <title>Mohamed & Hanen 💖</title>
     <style>
         body {
             margin: 0;
@@ -14,7 +14,73 @@
             perspective: 1000px;
         }
         
-        /* كارد التفاصيل والتعداد الرقمي */
+        /* شاشة قفل الباسوورد */
+        #lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .lock-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 102, 178, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+        }
+
+        .lock-card h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-shadow: 0 0 8px #ff007f;
+        }
+
+        .lock-card input {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid #ff66b2;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            width: 150px;
+            margin-bottom: 15px;
+        }
+
+        .lock-card button {
+            background: #ff007f;
+            border: none;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff007f;
+            transition: transform 0.2s;
+        }
+
+        .error-msg {
+            color: #ff3333;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* كارد الأسماء والتاريخ الثابت */
         .info-card {
             position: absolute;
             top: 50%;
@@ -22,65 +88,55 @@
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 102, 178, 0.25);
-            padding: 25px 40px;
-            border-radius: 20px;
+            padding: 35px 50px;
+            border-radius: 25px;
             text-align: center;
             backdrop-filter: blur(15px);
-            box-shadow: 0 0 40px rgba(255, 0, 127, 0.2);
+            box-shadow: 0 0 50px rgba(255, 0, 127, 0.25);
             z-index: 999;
-            min-width: 280px;
+            min-width: 320px;
         }
 
-        .title-text {
-            color: #ff66b2;
-            font-size: 1.2rem;
-            margin: 0 0 10px 0;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(255, 0, 127, 0.5);
-        }
-
-        .date-text {
-            font-size: 2.2rem;
+        .names-text {
+            font-size: 2.8rem;
             color: #fff;
-            letter-spacing: 2px;
             margin: 0 0 15px 0;
-            text-shadow: 0 0 10px #ff007f;
+            text-shadow: 0 0 15px #ff007f;
             font-weight: bold;
-        }
-
-        /* ستايل العداد التنازلي */
-        .countdown {
             display: flex;
+            align-items: center;
             justify-content: center;
             gap: 15px;
-            direction: ltr;
         }
 
-        .time-box {
-            color: #fff;
-            font-size: 1rem;
+        .heart-icon {
+            color: #ff007f;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
         }
 
-        .time-num {
-            font-size: 1.8rem;
-            font-weight: bold;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .date-display {
+            font-size: 1.5rem;
             color: #ff66b2;
-            text-shadow: 0 0 8px #ff007f;
-            display: block;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+            margin: 0;
         }
 
-        .time-label {
-            font-size: 0.75rem;
-            color: #aaa;
-            text-transform: uppercase;
-        }
-
-        /* الكلمات العائمة ثلاثية الأبعاد */
+        /* الكلمات العائمة */
         .floating-text {
             position: absolute;
             font-weight: bold;
-            color: rgba(255, 102, 178, 0.65);
-            text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+            color: rgba(255, 102, 178, 0.6);
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
             white-space: nowrap;
             transform-style: preserve-3d;
             animation: move3D 9s linear infinite;
@@ -88,40 +144,16 @@
         }
 
         @keyframes move3D {
-            0% {
-                transform: translate3d(var(--x-start), var(--y-start), -1000px) rotateY(var(--rot-start));
-                opacity: 0;
-            }
+            0% { transform: translate3d(var(--x-start), var(--y-start), -1000px) rotateY(var(--rot-start)); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% {
-                transform: translate3d(var(--x-end), var(--y-end), 200px) rotateY(var(--rot-end));
-                opacity: 0;
-            }
+            100% { transform: translate3d(var(--x-end), var(--y-end), 200px) rotateY(var(--rot-end)); opacity: 0; }
         }
 
-        /* النجوم المتلألئة في الخلفية */
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle 3s infinite ease-in-out;
-        }
+        .star { position: absolute; background-color: #fff; border-radius: 50%; animation: twinkle 3s infinite ease-in-out; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-
-        /* القلوب المتساقطة */
-        .heart {
-            position: absolute;
-            color: #ff3366;
-            animation: fall linear infinite;
-            z-index: 2;
-            pointer-events: none;
-        }
-
+        .heart-fall { position: absolute; color: #ff3366; animation: fall linear infinite; z-index: 2; pointer-events: none; }
         @keyframes fall {
             0% { transform: translateY(-10vh) scale(0); opacity: 1; }
             100% { transform: translateY(110vh) scale(1.5); opacity: 0; }
@@ -130,54 +162,55 @@
 </head>
 <body>
 
-    <div class="info-card">
-        <div class="title-text">SAVE THE DATE</div>
-        <div class="date-text">18 . 05 . 2027</div>
-        <div class="countdown" id="countdown">
-            <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">Days</span></div>
-            <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">Hrs</span></div>
-            <div class="time-box"><span class="time-num" id="mins">00</span><span class="time-label">Mins</span></div>
-            <div class="time-box"><span class="time-num" id="secs">00</span><span class="time-label">Secs</span></div>
+    <div id="lock-screen">
+        <div class="lock-card">
+            <h2>🔒 ادخلي الرقم السري لرؤية المفاجأة</h2>
+            <input type="password" id="pass-input" placeholder="••••">
+            <br>
+            <button onclick="checkPassword()">فتح المفاجأة 💖</button>
+            <div id="error-msg" class="error-msg">الرقم السري غير صحيح، حاولي تاني! 🤔</div>
         </div>
     </div>
 
+    <div class="info-card">
+        <div class="names-text">
+            mohamed <span class="heart-icon">❤️</span> hanen
+        </div>
+        <p class="date-display">18 . 05 . 2026</p>
+    </div>
+
     <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        <source src="https://bayanbox.ir/download/5549210086395982794/Sherine-Habat-Gannah.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         const message = "I LOVE YOUUU hanonaa";
+        const correctPassword = "12/9/2008"; // الباسوورد هنا
 
-        // تشغيل الموسيقى أول ما تلمس الشاشة
-        document.body.addEventListener('click', () => {
+        function checkPassword() {
+            const input = document.getElementById("pass-input").value;
+            const error = document.getElementById("error-msg");
+            const lockScreen = document.getElementById("lock-screen");
             const audio = document.getElementById('bg-music');
-            audio.play().catch(e => console.log("Audio playing..."));
-        }, { once: true });
 
-        // العداد التنازلي الجديد ليوم 18 مايو 2027
-        const targetDate = new Date("May 18, 2027 00:00:00").getTime();
+            if (input === correctPassword) {
+                lockScreen.style.opacity = "0";
+                setTimeout(() => {
+                    lockScreen.style.display = "none";
+                }, 800);
+                
+                audio.play().catch(e => console.log("Audio playing..."));
+                startAnimations();
+            } else {
+                error.style.display = "block";
+                document.getElementById("pass-input").value = "";
+            }
+        }
 
-        setInterval(() => {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((difference % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = d < 10 ? "0" + d : d;
-            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
-            document.getElementById("mins").innerText = m < 10 ? "0" + m : m;
-            document.getElementById("secs").innerText = s < 10 ? "0" + s : s;
-        }, 1000);
-
-        // توليد الكلمات العائمة
         function createFloatingText() {
             const textEl = document.createElement('div');
             textEl.classList.add('floating-text');
             textEl.innerText = message;
-            
             textEl.style.fontSize = (Math.random() * 1.3 + 1.2) + 'rem';
             textEl.style.setProperty('--x-start', (Math.random() * 120 - 10) + 'vw');
             textEl.style.setProperty('--y-start', (Math.random() * 120 - 10) + 'vh');
@@ -185,32 +218,26 @@
             textEl.style.setProperty('--y-end', (Math.random() * 120 - 10) + 'vh');
             textEl.style.setProperty('--rot-start', (Math.random() * 40 - 20) + 'deg');
             textEl.style.setProperty('--rot-end', (Math.random() * 40 - 20) + 'deg');
-            
             textEl.style.animationDuration = (Math.random() * 5 + 6) + 's';
-            
             document.body.appendChild(textEl);
             setTimeout(() => { textEl.remove(); }, 11000);
         }
 
-        // توليد النجوم
         function createStars() {
             for (let i = 0; i < 50; i++) {
                 const star = document.createElement('div');
                 star.classList.add('star');
                 const size = Math.random() * 3 + 'px';
-                star.style.width = size;
-                star.style.height = size;
-                star.style.left = Math.random() * 100 + 'vw';
-                star.style.top = Math.random() * 100 + 'vh';
+                star.style.width = size; star.style.height = size;
+                star.style.left = Math.random() * 100 + 'vw'; star.style.top = Math.random() * 100 + 'vh';
                 star.style.animationDelay = Math.random() * 3 + 's';
                 document.body.appendChild(star);
             }
         }
 
-        // توليد القلوب
         function createHeart() {
             const heart = document.createElement('div');
-            heart.classList.add('heart');
+            heart.classList.add('heart-fall');
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = Math.random() * 3 + 2 + 's';
@@ -219,10 +246,11 @@
             setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        createStars();
-        setInterval(createFloatingText, 500);
-        setInterval(createHeart, 300);
-        for(let i=0; i<10; i++) { createFloatingText(); }
+        function startAnimations() {
+            createStars();
+            setInterval(createFloatingText, 500);
+            setInterval(createHeart, 300);
+        }
     </script>
 </body>
 </html>
